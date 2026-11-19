@@ -1,0 +1,14 @@
+#!/bin/bash
+# Usage: ./project3 [-q] numNodes numRequests [failPct [linkFailPct [dropPct]]]
+# Needs Erlang (erl, erlc) on the PATH. Compiles src/ into ebin/ when needed.
+DIR="$(cd "$(dirname "$0")" && pwd)"
+if command -v make >/dev/null 2>&1; then
+    make -s -C "$DIR" || exit 1
+else
+    mkdir -p "$DIR/ebin"
+    for f in "$DIR"/src/*.erl; do
+        b="$DIR/ebin/$(basename "${f%.erl}").beam"
+        [ "$b" -nt "$f" ] || erlc -o "$DIR/ebin" "$f" || exit 1
+    done
+fi
+exec erl -noshell -pa "$DIR/ebin" +P 5000000 -s project3 start -extra "$@"
