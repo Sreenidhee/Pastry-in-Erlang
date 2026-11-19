@@ -1,4 +1,4 @@
-# Project 3 – Pastry in Erlang
+# Pastry in Erlang
 
 An implementation of the Pastry overlay network (Rowstron & Druschel, 2001),
 using the actor model, plus a simple key → string storage service built on
